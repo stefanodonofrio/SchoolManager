@@ -3,21 +3,20 @@ using SchoolManager.Frontend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddSingleton<TeacherService>();
 builder.Services.AddSingleton<StudentService>();
 builder.Services.AddSingleton<CourseService>();
 
 builder.Services.AddHttpClient<TeacherService>(c => {
-    var url = builder.Configuration["Services:TeachersApi"];
-    c.BaseAddress = new(url);
+    c.BaseAddress = new("https://schoolmanager-teachersapi");
 });
 builder.Services.AddHttpClient<StudentService>(c => {
-    var url = builder.Configuration["Services:StudentsApi"];
-    c.BaseAddress = new(url);
+    c.BaseAddress = new("https://schoolmanager-studentsapi");
 });
 builder.Services.AddHttpClient<CourseService>(c => {
-    var url = builder.Configuration["Services:CoursesApi"];
-    c.BaseAddress = new(url);
+    c.BaseAddress = new("https://schoolmanager-coursesapi");
 });
 
 // Add services to the container.
@@ -25,6 +24,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

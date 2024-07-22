@@ -15,8 +15,8 @@ namespace SchoolManager.CoursesApi.Controllers
             this.courseService = courseService;
         }
 
-        public async Task<IEnumerable<Course>> GetAll() => 
-            await courseService.GetAllAsync();
+        public async Task<IList<Course>> GetAll() => 
+            (await courseService.GetAllAsync()).ToList();
         
 
         [HttpGet("{id}")]

@@ -4,6 +4,8 @@ using SchoolManager.CoursesApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 
 builder.Services.AddDbContext<CourseDbContext>(options => options.UseNpgsql(builder.Configuration["ConnectionStrings:CourseDb"]));
@@ -11,17 +13,17 @@ builder.Services.AddScoped<ICourseService,CourseService>();
 builder.Services.AddSingleton<TeacherService>();
 builder.Services.AddSingleton<StudentService>();
 builder.Services.AddHttpClient<TeacherService>(c => { 
-    var url = builder.Configuration["Services:TeachersApi"];
-    c.BaseAddress = new (url); 
+    c.BaseAddress = new ("https://schoolmanager-teachersapi"); 
 });
 builder.Services.AddHttpClient<StudentService>(c => {
-    var url = builder.Configuration["Services:StudentsApi"];
-    c.BaseAddress = new(url);
+    c.BaseAddress = new("https://schoolmanager-studentsapi");
 });
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 
 using (var scope = app.Services.CreateScope())

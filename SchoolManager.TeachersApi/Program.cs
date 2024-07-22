@@ -3,6 +3,8 @@ using SchoolManager.TeachersApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 
 builder.Services.AddDbContext<TeacherDbContext>(options => options.UseNpgsql(builder.Configuration["ConnectionStrings:TeacherDb"]));
@@ -10,6 +12,8 @@ builder.Services.AddDbContext<TeacherDbContext>(options => options.UseNpgsql(bui
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 
 using (var scope = app.Services.CreateScope())

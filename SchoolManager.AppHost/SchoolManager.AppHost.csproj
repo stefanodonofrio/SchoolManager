@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>fa2c7b30-4c51-4c30-b24f-59d6b10582f3</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolManager.CoursesApi\SchoolManager.CoursesApi.csproj" />
+    <ProjectReference Include="..\SchoolManager.Frontend\SchoolManager.Frontend.csproj" />
+    <ProjectReference Include="..\SchoolManager.StudentsApi\SchoolManager.StudentsApi.csproj" />
+    <ProjectReference Include="..\SchoolManager.TeachersApi\SchoolManager.TeachersApi.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SchoolManager.Common\SchoolManager.Common.csproj" />
+    <ProjectReference Include="..\SchoolManager.ServiceDefaults\SchoolManager.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
