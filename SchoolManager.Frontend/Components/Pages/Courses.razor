@@ -1,0 +1,155 @@
+﻿@page "/courses"
+@using SchoolManager.Frontend.Services
+@using StudentsManager.Common
+@inject CourseService CourseService
+@inject TeacherService TeacherService
+@inject StudentService StudentService
+
+
+@rendermode InteractiveServer
+
+<PageTitle>Courses</PageTitle>
+
+<h1>Courses</h1>
+
+@if (courses == null)
+{
+    <p><em>No Data</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Teacher</th>
+                <th>Students</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in courses)
+            {
+                <tr>
+                    <td>@course.Id</td>
+                    <td>@course.Name</td>
+                    <td>@course.Description</td>
+                    <td>@course.Teacher.Name @course.Teacher.LastName</td>
+                    <td>
+                        @foreach (var student in course.Students)
+                        {
+                            <div>@student.Name @student.LastName</div>
+                        }
+                    </td>
+                    <td><button class="btn btn-danger" @onclick="() => DeleteCourse(course.Id)">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-primary" @onclick="OpenModal">Add Course</button>
+    @if (showModal)
+    {
+        <br />
+        <br />
+
+        <div>
+            <div>
+                <h2>Create Course</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" class="form-control" @bind="@newCourse.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" class="form-control" @bind="@newCourse.Description" />
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherId">Teacher:</label>
+                        @foreach (var teacher in teachers)
+                        {
+                            <div>
+                                <input type="radio" id="teacherId" name="teacherId" @bind="@teacher.Id" @onclick="() => UpdateTeacher(teacher.Id)"/>
+                                <label for="@teacher.Id">@teacher.Name @teacher.LastName</label>
+                            </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherId">Students:</label>
+                        @foreach (var student in students)
+                        {
+                            <div>
+                                <input type="checkbox" id="studentsId" name="studentsId" @onclick="() => UpdateStudents(student.Id)" />
+                                <label for="@student.Id">@student.Name @student.LastName</label>
+                            </div>
+                        }
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-primary" @onclick="CreateStudent">Create</button>
+                    <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private Course[]? courses;
+    private Teacher[]? teachers;
+    private Student[]? students;
+    private List<Student> courseStudents;
+
+    private Course newCourse = new Course() { Id = Guid.NewGuid()};
+    private bool showModal = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        courses = (await CourseService.GetAllAsync()).ToArray();
+        teachers = (await TeacherService.GetAllAsync()).ToArray();
+        students = (await StudentService.GetAllAsync()).ToArray();
+    }
+    private void UpdateTeacher(Guid id)
+    {
+        newCourse.Teacher = teachers.First(t => t.Id == id);
+    }
+
+    private void UpdateStudents(Guid id)
+    {
+        if(courseStudents.Any(x => x.Id == id))
+        {
+            courseStudents.Remove(students.Single(x => x.Id == id));
+        }
+        else
+        {
+            courseStudents.Add(students.Single(x => x.Id == id));
+        }
+        newCourse.Students = courseStudents;
+    }
+
+    private async Task DeleteCourse(Guid id)
+    {
+        await CourseService.DeleteAsync(id);
+        courses = (await CourseService.GetAllAsync()).ToArray();
+    }
+
+    private void OpenModal()
+    {
+        showModal = true;
+        courseStudents = new List<Student>();
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task CreateStudent()
+    {
+        await CourseService.CreateAsync(newCourse);
+        courses = (await CourseService.GetAllAsync()).ToArray();
+        newCourse = new Course() { Id = Guid.NewGuid() };
+        showModal = false;
+    }
+}

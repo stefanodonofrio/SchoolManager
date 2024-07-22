@@ -1,0 +1,6 @@
+@SchoolManager.LessonApi_HostAddress = http://localhost:5028
+
+GET {{SchoolManager.LessonApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

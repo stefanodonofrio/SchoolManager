@@ -1,0 +1,110 @@
+﻿@page "/students"
+@using SchoolManager.Frontend.Services
+@using StudentsManager.Common
+@inject StudentService StudentService
+@rendermode InteractiveServer
+
+<PageTitle>Students</PageTitle>
+
+<h1>Students</h1>
+
+@if (students == null)
+{
+    <p><em>No Data</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>LastName</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in students)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.LastName</td>
+                    <td>@student.Age</td>
+                    <td>@student.Email</td>
+                    <td><button class="btn btn-danger" @onclick="() => DeleteStudent(student.Id)">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-primary" @onclick="OpenModal">Add Student</button>
+    @if (showModal)
+    {
+        <br/>
+        <br />
+
+        <div>
+            <div >
+                <h2>Create Student</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" class="form-control" @bind="@newStudent.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" class="form-control" @bind="@newStudent.LastName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" class="form-control" @bind="@newStudent.Age" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" class="form-control" @bind="@newStudent.Email" />
+                    </div>
+                    <br/>
+                    <button type="submit" class="btn btn-primary" @onclick="CreateStudent">Create</button>
+                    <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private Student[]? students;
+    private Student newStudent = new Student() { Id = Guid.NewGuid() };
+    private bool showModal = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        students = (await StudentService.GetAllAsync()).ToArray();
+    }
+
+    private async Task DeleteStudent(Guid id)
+    {
+        await StudentService.DeleteAsync(id);
+        students = (await StudentService.GetAllAsync()).ToArray();
+    }
+
+    private void OpenModal()
+    {
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task CreateStudent()
+    {
+        await StudentService.CreateAsync(newStudent);
+        students = (await StudentService.GetAllAsync()).ToArray();
+        newStudent = new Student() { Id = Guid.NewGuid() };
+        showModal = false;
+    }
+}
