@@ -9,6 +9,8 @@ var student = builder.AddProject<Projects.SchoolManager_StudentsApi>("schoolmana
 var courseDb = builder.AddConnectionString("CourseDb");
 var course = builder.AddProject<Projects.SchoolManager_CoursesApi>("schoolmanager-coursesapi").WithReference(teacher).WithReference(student).WithReference(courseDb);
 
-builder.AddProject<Projects.SchoolManager_Frontend>("schoolmanager-frontend").WithReference(teacher).WithReference(student).WithReference(course);
+var mailDev = builder.AddMailDev("maildev");
+
+builder.AddProject<Projects.SchoolManager_Frontend>("schoolmanager-frontend").WithReference(teacher).WithReference(student).WithReference(course).WithReference(mailDev);
 
 builder.Build().Run();

@@ -2,16 +2,19 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Text;
+using System.Net.Mail;
 
 namespace SchoolManager.Frontend.Services
 {
     public class CourseService
     {
         private readonly HttpClient httpClient;
+        private readonly SmtpClient smtpClient;
 
-        public CourseService(HttpClient httpClient)
+        public CourseService(HttpClient httpClient, SmtpClient smtpClient)
         {
             this.httpClient = httpClient;
+            this.smtpClient = smtpClient;
         }
 
         public async Task<IEnumerable<Course>> GetAllAsync()
@@ -32,6 +35,14 @@ namespace SchoolManager.Frontend.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             await httpClient.PostAsync("/api/courses", content);
+
+            using var message = new MailMessage("newsletter@school.com", "everyone@world.com")
+            {
+                Subject = "New Course being created",
+                Body = $"A new course has been created! Watch out {json}"
+            };
+
+            await smtpClient.SendMailAsync(message);
         }
 
         public async Task DeleteAsync(Guid id)

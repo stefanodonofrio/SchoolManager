@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolManager.AppHost", "Sc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolManager.ServiceDefaults", "SchoolManager.ServiceDefaults\SchoolManager.ServiceDefaults.csproj", "{A6196D59-DEA3-48BE-B8B6-7DDC2D4A4F2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolManager.MailDev", "SchoolManager.MailDev\SchoolManager.MailDev.csproj", "{ACC89599-A3DF-4222-ABF8-5EDF51BEF414}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{A6196D59-DEA3-48BE-B8B6-7DDC2D4A4F2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6196D59-DEA3-48BE-B8B6-7DDC2D4A4F2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6196D59-DEA3-48BE-B8B6-7DDC2D4A4F2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACC89599-A3DF-4222-ABF8-5EDF51BEF414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC89599-A3DF-4222-ABF8-5EDF51BEF414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC89599-A3DF-4222-ABF8-5EDF51BEF414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC89599-A3DF-4222-ABF8-5EDF51BEF414}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,9 +1,19 @@
 using SchoolManager.Frontend.Components;
 using SchoolManager.Frontend.Services;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+builder.Services.AddSingleton<SmtpClient>(sp =>
+{
+    var smtpUri = new Uri(builder.Configuration.GetConnectionString("maildev")!);
+
+    var smtpClient = new SmtpClient(smtpUri.Host, smtpUri.Port);
+
+    return smtpClient;
+});
 
 builder.Services.AddSingleton<TeacherService>();
 builder.Services.AddSingleton<StudentService>();

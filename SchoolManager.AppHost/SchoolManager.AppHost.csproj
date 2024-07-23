@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SchoolManager.CoursesApi\SchoolManager.CoursesApi.csproj" />
     <ProjectReference Include="..\SchoolManager.Frontend\SchoolManager.Frontend.csproj" />
+    <ProjectReference Include="..\SchoolManager.MailDev\SchoolManager.MailDev.csproj" IsAspireProjectResource="false" />
     <ProjectReference Include="..\SchoolManager.StudentsApi\SchoolManager.StudentsApi.csproj" />
     <ProjectReference Include="..\SchoolManager.TeachersApi\SchoolManager.TeachersApi.csproj" />
   </ItemGroup>
