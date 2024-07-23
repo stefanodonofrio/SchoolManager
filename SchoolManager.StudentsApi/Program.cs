@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 // Add services to the container.
-builder.Services.AddDbContext<StudentDbContext>(options => options.UseNpgsql(builder.Configuration["ConnectionStrings:StudentDb"]));
+builder.AddNpgsqlDbContext<StudentDbContext>("StudentDb", c => c.CommandTimeout = 300);
 
 
 builder.Services.AddControllers();

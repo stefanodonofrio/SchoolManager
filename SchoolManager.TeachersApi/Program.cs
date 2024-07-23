@@ -7,7 +7,7 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 
-builder.Services.AddDbContext<TeacherDbContext>(options => options.UseNpgsql(builder.Configuration["ConnectionStrings:TeacherDb"]));
+builder.AddNpgsqlDbContext<TeacherDbContext>("TeacherDb", c => c.CommandTimeout=300);
 
 builder.Services.AddControllers();
 

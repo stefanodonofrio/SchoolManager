@@ -1,10 +1,13 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var teacher = builder.AddProject<Projects.SchoolManager_TeachersApi>("schoolmanager-teachersapi");
+var teacherDb = builder.AddConnectionString("TeacherDb");
+var teacher = builder.AddProject<Projects.SchoolManager_TeachersApi>("schoolmanager-teachersapi").WithReference(teacherDb);
 
-var student = builder.AddProject<Projects.SchoolManager_StudentsApi>("schoolmanager-studentsapi");
+var studentDb = builder.AddConnectionString("StudentDb");
+var student = builder.AddProject<Projects.SchoolManager_StudentsApi>("schoolmanager-studentsapi").WithReference(studentDb);
 
-var course = builder.AddProject<Projects.SchoolManager_CoursesApi>("schoolmanager-coursesapi").WithReference(teacher).WithReference(student);
+var courseDb = builder.AddConnectionString("CourseDb");
+var course = builder.AddProject<Projects.SchoolManager_CoursesApi>("schoolmanager-coursesapi").WithReference(teacher).WithReference(student).WithReference(courseDb);
 
 builder.AddProject<Projects.SchoolManager_Frontend>("schoolmanager-frontend").WithReference(teacher).WithReference(student).WithReference(course);
 
